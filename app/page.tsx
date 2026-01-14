@@ -3,6 +3,8 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import Image from 'next/image';
+import styles from './page.module.scss';
 import Container from '@mui/material/Container';
 import SectionInput, { SubmitPayload } from '@/app/components/SectionInput';
 
