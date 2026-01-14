@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
@@ -30,11 +31,11 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ThemeRegistry>
           <MenuAppBar />
-          <Grid container spacing={2}>
-            <Grid size={1}></Grid>
-            <Grid size={10}>{children}</Grid>
-            <Grid size={1}></Grid>
-          </Grid>
+          <Box sx={{ display: 'flex', width: '100%' }}>
+            <Box sx={{ width: '8.33%' }} />
+            <Box sx={{ width: '83.33%' }}>{children}</Box>
+            <Box sx={{ width: '8.33%' }} />
+          </Box>
         </ThemeRegistry>
       </body>
     </html>
