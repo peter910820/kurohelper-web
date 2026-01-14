@@ -10,13 +10,27 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Link from 'next/link';
 
 export default function AppBarWithDrawer() {
-  const [open, setOpen] = React.useState(false);
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [loginDialogOpen, setLoginDialogOpen] = React.useState(false);
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
-  const toggleDrawer = (state: boolean) => () => setOpen(state);
+  const toggleDrawer = (state: boolean) => () => setDrawerOpen(state);
 
-  const menuItems = ['Home', 'About', 'Contact'];
+  const handleLogin = () => {
+    setLoginDialogOpen(false);
+    // TODO: 實現登入邏輯
+  };
 
   return (
     <>
@@ -32,36 +46,74 @@ export default function AppBarWithDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6">My App</Typography>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
+            KuroHelper
+          </Typography>
+          <Box sx={{ flexGrow: 1 }} />
+          <Button color="inherit" onClick={() => setLoginDialogOpen(true)}>
+            登入
+          </Button>
         </Toolbar>
       </AppBar>
 
       {/* Drawer */}
       <Drawer
         anchor="left"
-        open={open}
+        open={drawerOpen}
         onClose={toggleDrawer(false)}
         slotProps={{
           paper: {
             sx: {
-              width: 350, // 設定 Drawer 寬度
+              width: 350,
             },
           },
         }}
       >
         <List>
-          {menuItems.map((text) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton onClick={toggleDrawer(false)}>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          <ListItem disablePadding>
+            <ListItemButton component={Link} href="/" onClick={toggleDrawer(false)}>
+              <ListItemText primary="首頁" />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
 
+      {/* Login Dialog */}
+      <Dialog open={loginDialogOpen} onClose={() => setLoginDialogOpen(false)} maxWidth="xs" fullWidth>
+        <DialogTitle>登入</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="帳號"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            sx={{ mt: 2 }}
+          />
+          <TextField
+            margin="dense"
+            label="密碼"
+            type="password"
+            fullWidth
+            variant="outlined"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            sx={{ mt: 2 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setLoginDialogOpen(false)}>取消</Button>
+          <Button onClick={handleLogin} variant="contained">
+            登入
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {/* 避免 AppBar 遮住頁面 */}
-      <div style={{ marginTop: 64 }} />
+      <Toolbar />
     </>
   );
 }
